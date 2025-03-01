@@ -16,6 +16,6 @@
     - Stores messages, responses, and LLM metadata.
 - **LLM Integration (Ollama)**
     - Hosts and processes user-defined messages with local LLMs.
-    - Running LLMs metadata must be stored into MongoDB which should have up-to-date information of running models that user can interact with. Backend will manage starting the service in Ollama
+    - Running LLMs metadata must be stored into MongoDB which should have up-to-date information of running models that user can interact with. Backend will manage LLMs (initialize, start, stop)  running in Ollama, these actions can be possibly implemented in Client, so user can manage Ollama through client and backend.
 
 
