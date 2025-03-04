@@ -1,15 +1,20 @@
 version: "3.8"
 
+networks:
+  default:
+
 services:
   frontend:
     build:
       context: ./frontend
       dockerfile: Dockerfile
+    networks:
+      - default
     ports:
       - "8080:8080"
     volumes:
     - ./frontend/src:/app/src
-    - /node_modules # Keep node_modules from the image    environment:
+    - /node_modules
     environment:
       - HOST=0.0.0.0
       - PORT=8080
@@ -22,8 +27,22 @@ services:
     build:
       context: ./backend
       dockerfile: Dockerfile
+    networks:
+      - default
     ports:
       - "3000:3000"
     environment:
       - NODE_ENV=production
-    restart: always
+    restart: unless-stopped
+
+  ollama:
+    image: ollama/ollama:latest
+    ports:
+      - "11434:11434"
+    networks:
+      - default
+    environment:
+      - NODE_ENV=production
+      - OLLAMA_DIR=/root/.ollama
+    volumes:
+      - /mnt/c/Users/<username>/.ollama/models:/root/.ollama/models
