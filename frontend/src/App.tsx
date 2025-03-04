@@ -11,6 +11,7 @@ function App() {
     userPrompt: "",
     systemPrompt: "",
   });
+  const [selectedModels, setSelectedModels] = React.useState<string[]>([]);
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
   const handleUserPromptChange = (
     e: React.ChangeEvent<HTMLTextAreaElement>
@@ -25,12 +26,21 @@ function App() {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsLoading(true);
-    // sending data to api
+    // sending data to api, chosen model and prompts
     console.log(prompt);
     setPrompt({ userPrompt: "", systemPrompt: "" });
     setIsLoading(false);
   };
-
+  const handleModelChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const modelName = e.target.value;
+    if (e.target.checked) {
+      //add the model
+      setSelectedModels((prev) => [...prev, modelName]);
+    } else {
+      // Remove the model
+      setSelectedModels((prev) => prev.filter((model) => model !== modelName));
+    }
+  };
   return (
     <div className="App">
       <div className="bg-gray-700 min-h-[100vh] flex flex-col align-center">
@@ -42,7 +52,42 @@ function App() {
             <p className=" text-gray-100 font-bold text-3xl ">
               Ask a question:
             </p>
-            <div className="mt-8 flex flex-row gap-x-2 justify-center align-center w-[80vw]">
+            <div className="mt-8  flex justify-center align-center gap-x-4">
+              <div>
+                <input
+                  type="checkbox"
+                  value="davinci"
+                  id="davinci"
+                  onChange={handleModelChange}
+                />{" "}
+                <label htmlFor="davinci" className=" text-gray-100 text-base">
+                  Davinci
+                </label>
+              </div>
+              <div>
+                <input
+                  type="checkbox"
+                  value="gpt-4"
+                  id="gpt4"
+                  onChange={handleModelChange}
+                />{" "}
+                <label htmlFor="gpt4" className=" text-gray-100 text-base">
+                  GPT-4
+                </label>
+              </div>
+              <div>
+                <input
+                  type="checkbox"
+                  value="deepseek"
+                  id="deepseek"
+                  onChange={handleModelChange}
+                />{" "}
+                <label htmlFor="deepseek" className=" text-gray-100 text-base">
+                  Deepseek
+                </label>
+              </div>
+            </div>
+            <div className="mt-4 flex flex-row gap-x-2 justify-center align-center w-[80vw]">
               <div className="w-full">
                 <p className="py-2 bg-blue-200  rounded-t-md font-bold">
                   User Prompt
