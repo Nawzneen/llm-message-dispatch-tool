@@ -4,3 +4,4 @@ build
 *.log
 .git
 .DS_Store
+.env
