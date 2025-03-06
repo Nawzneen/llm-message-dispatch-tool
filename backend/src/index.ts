@@ -1,22 +1,33 @@
-import express, { Request, Response } from 'express';
-import { initializeDB } from './db/pool';
-import messages from './api/messages';
+import express, { Request, Response } from "express";
+import { initializeDB } from "./db/pool";
+import messages from "./api/messages";
+import llms from "./api/llms";
 
 const app = express();
+const PORT = process.env.PORT || 3000;
 
-export let pool: any;
-
-(async () => {
-    pool = await initializeDB();
-})();
-
-app.get('/', async (req: Request, res: Response) => {
-    res.send('Hello');
-});
-
+// Middleware
 app.use(express.json());
-app.use('/api/messages', messages);
 
-app.listen(3000, () => {
-    console.log('Server is running on port 3000');
+// Routes
+app.get("/api", (req: Request, res: Response) => {
+  res.send("Hello");
 });
+
+app.use("/api/messages", messages);
+app.use("/api/llms", llms);
+
+// Start the server only after database connection
+async function startServer() {
+  try {
+    await initializeDB(); // Ensure DB is initialized before starting the server
+    app.listen(PORT, () => {
+      console.log(`🚀 Server is running on port ${PORT}`);
+    });
+  } catch (error) {
+    console.error("❌ Failed to initialize the server:", error);
+    process.exit(1); // Exit if database fails to connect
+  }
+}
+
+startServer();

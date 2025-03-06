@@ -1,29 +1,26 @@
-import { MongoClient } from "mongodb";
+import mongoose from "mongoose";
 import dotenv from "dotenv";
 dotenv.config();
 
 // Get db credentials from .env
-const db_username = process.env.db_username;
-const db_password = process.env.db_password;
+const db_username = process.env.DB_USERNAME;
+const db_password = process.env.DB_PASSWORD;
+const db_name = process.env.DB_NAME || "sqa"; // Default to "sqa" if not provided
 
-// Format ConnectionString for MongoDB
-const uri = `mongodb+srv://${db_username}:${db_password}@cluster0.t8ptu.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`
+// Format MongoDB Connection URI
+const uri = `mongodb+srv://${db_username}:${db_password}@cluster0.t8ptu.mongodb.net/${db_name}?retryWrites=true&w=majority&appName=Cluster0`;
 
-const client = new MongoClient(uri);
-
-let conn: MongoClient;
-
-async function connectToDB() {
+// Function to connect to MongoDB
+export async function initializeDB(): Promise<void> {
   try {
-    conn = await client.connect();
-    console.log("Connected to MongoDB");
-  } catch(e) {
-    console.error(e);
+    await mongoose.connect(uri, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true
+    } as mongoose.ConnectOptions);
+    
+    console.log("Connected to MongoDB via Mongoose");
+  } catch (error) {
+    console.error("MongoDB Connection Error:", error);
+    process.exit(1); // Exit process if connection fails
   }
-}
-
-export async function initializeDB() {
-  await connectToDB();
-  let db = conn.db("sqa");
-  return db;
 }
