@@ -33,6 +33,12 @@ services:
       - "3000:3000"
     environment:
       - NODE_ENV=production
+      - DB_USERNAME=admin
+      - DB_PASSWORD=password
+      - DB_HOST=mongodb
+      - DB_PORT=27017
+      - DB_NAME=sqa
+      - PORT=3000
     restart: unless-stopped
 
   ollama:
@@ -44,5 +50,32 @@ services:
     environment:
       - NODE_ENV=production
       - OLLAMA_DIR=/root/.ollama
+      - OLLAMA_NUM_THREADS=8
+      - OLLAMA_MAX_LOADED_MODELS=2
+      - OLLAMA_MODEL_DISK_CACHE=true
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
     volumes:
       - /mnt/c/Users/<username>/.ollama/models:/root/.ollama/models
+
+  mongodb:
+    image: mongo:latest
+    restart: always
+    ports:
+      - "27017:27017"
+    networks:
+      - default
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: password
+    volumes:
+      - mongo_data:/data/db
+      
+volumes:
+  mongo_data:
+    driver: local

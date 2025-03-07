@@ -41,7 +41,7 @@ function App() {
     // sending data to api, chosen model and prompts
     try {
       // user id is hard coded
-      const user_id = 0;
+      const user_id = 1;
       const res = await sendMessage(user_id, prompt, selectedModels);
       console.log("rest post is,", res);
       setPrompt({ userPrompt: "", systemPrompt: "" });
@@ -62,26 +62,28 @@ function App() {
   };
   const sendMessage = async (
     user_id: number,
-    prompt: Object,
-    models: String[]
+    prompt: promptType,
+    models: string[]
   ) => {
     try {
-      const response = await fetch("htpp://localhost:3000/api/messages", {
+      const response = await fetch("http://localhost:3000/api/messages", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        // user id is hardcoded for now
         body: JSON.stringify({
           user_id: user_id,
-          message_content: prompt,
+          message_content: {
+            user_message: prompt.userPrompt,
+            system_message: prompt.systemPrompt,
+          },
           llm: models,
         }),
       });
       const data = await response.json();
-      console.log(data);
+      console.log("Response:", data);
     } catch (err) {
-      console.error();
+      console.error("Error:", err);
     }
   };
   return (
@@ -116,6 +118,17 @@ function App() {
                 />{" "}
                 <label htmlFor="gpt4" className=" text-gray-100 text-base">
                   GPT-4
+                </label>
+              </div>
+              <div>
+                <input
+                  type="checkbox"
+                  value="marco-o1"
+                  id="marco-o1"
+                  onChange={handleModelChange}
+                />{" "}
+                <label htmlFor="marco-o1" className=" text-gray-100 text-base">
+                  marco-o1
                 </label>
               </div>
               <div>

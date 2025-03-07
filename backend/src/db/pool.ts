@@ -2,13 +2,14 @@ import mongoose from "mongoose";
 import dotenv from "dotenv";
 dotenv.config();
 
-// Get db credentials from .env
-const db_username = process.env.DB_USERNAME;
-const db_password = process.env.DB_PASSWORD;
-const db_name = process.env.DB_NAME || "sqa"; // Default to "sqa" if not provided
+const db_username = process.env.DB_USERNAME || "admin";
+const db_password = process.env.DB_PASSWORD || "password";
+const db_host = process.env.DB_HOST || "mongodb";
+const db_port = process.env.DB_PORT || "27017";
+const db_name = process.env.DB_NAME || "sqa";
 
 // Format MongoDB Connection URI
-const uri = `mongodb+srv://${db_username}:${db_password}@cluster0.t8ptu.mongodb.net/${db_name}?retryWrites=true&w=majority&appName=Cluster0`;
+const uri = `mongodb://${db_username}:${db_password}@${db_host}:${db_port}/${db_name}?authSource=admin`;
 
 // Function to connect to MongoDB
 export async function initializeDB(): Promise<void> {

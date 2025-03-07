@@ -62,7 +62,7 @@ router.post("/", async (req: Request, res: Response): Promise<void> => {
 // Function to send a message to Ollama
 async function sendToOllama(llm_model: string, message_content: any, messageId: Types.ObjectId) {
   try {
-    const ollamaUrl = `http://localhost:11434/api/generate`; // Ollama endpoint
+    const ollamaUrl = `http://ollama:11434/api/generate`; // Ollama endpoint
     const payload = {
       model: llm_model,
       prompt: message_content.user_message,
