@@ -1,5 +1,4 @@
-import React from "react";
-import logo from "./logo.svg";
+import React, { useEffect } from "react";
 import "./App.css";
 interface promptType {
   userPrompt: string;
@@ -13,6 +12,19 @@ function App() {
   });
   const [selectedModels, setSelectedModels] = React.useState<string[]>([]);
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
+  useEffect(() => {
+    const fetchAPI = async () => {
+      try {
+        const res = await fetch("http://localhost:3000/api/");
+        const data = res.text();
+        console.log("res", res);
+        console.log("data", data);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+    fetchAPI();
+  }, []);
   const handleUserPromptChange = (
     e: React.ChangeEvent<HTMLTextAreaElement>
   ) => {
@@ -23,12 +35,19 @@ function App() {
   ) => {
     setPrompt({ ...prompt, systemPrompt: e.target.value });
   };
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsLoading(true);
     // sending data to api, chosen model and prompts
-    console.log(prompt);
-    setPrompt({ userPrompt: "", systemPrompt: "" });
+    try {
+      // user id is hard coded
+      const user_id = 0;
+      const res = await sendMessage(user_id, prompt, selectedModels);
+      console.log("rest post is,", res);
+      setPrompt({ userPrompt: "", systemPrompt: "" });
+    } catch (err) {
+      console.log(err);
+    }
     setIsLoading(false);
   };
   const handleModelChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -39,6 +58,30 @@ function App() {
     } else {
       // Remove the model
       setSelectedModels((prev) => prev.filter((model) => model !== modelName));
+    }
+  };
+  const sendMessage = async (
+    user_id: number,
+    prompt: Object,
+    models: String[]
+  ) => {
+    try {
+      const response = await fetch("htpp://localhost:3000/api/messages", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        // user id is hardcoded for now
+        body: JSON.stringify({
+          user_id: user_id,
+          message_content: prompt,
+          llm: models,
+        }),
+      });
+      const data = await response.json();
+      console.log(data);
+    } catch (err) {
+      console.error();
     }
   };
   return (
