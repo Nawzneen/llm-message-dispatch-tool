@@ -2,10 +2,11 @@ import express, { Request, Response } from "express";
 import { initializeDB } from "./db/pool";
 import messages from "./api/messages";
 import llms from "./api/llms";
-
+import cors from "cors";
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+app.use(cors());
 // Middleware
 app.use(express.json());
 
