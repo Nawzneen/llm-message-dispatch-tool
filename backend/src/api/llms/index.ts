@@ -17,8 +17,8 @@ router.get("/", async (req: Request, res: Response) => {
 // Fetch available LLM models from Ollama and update DB
 router.get("/refresh", async (req: Request, res: Response) => {
   try {
-    console.log("Fetching models from Ollama...");
-    const response = await axios.get("http://localhost:11434/api/tags");
+    const ollama_host = process.env.OLLAMA_HOST || "http://localhost:11434";
+    const response = await axios.get(`${ollama_host}/api/tags`);
     console.log(response.data);
     const models = response.data.models.map((model: any) => ({
       model_name: model.name,
@@ -37,7 +37,8 @@ router.get("/refresh", async (req: Request, res: Response) => {
 router.post("/:modelName/start", async (req: Request, res: Response) => {
   const { modelName } = req.params;
   try {
-    await axios.post("http://localhost:11434/api/start", { model: modelName });
+    const ollama_host = process.env.OLLAMA_HOST || "http://localhost:11434";
+    await axios.post(`${ollama_host}/api/start`, { model: modelName });
     await LLMModel.updateOne({ model_name: modelName }, { status: "Active" });
 
     res.json({ message: `Model ${modelName} started` });
@@ -50,7 +51,8 @@ router.post("/:modelName/start", async (req: Request, res: Response) => {
 router.post("/:modelName/stop", async (req: Request, res: Response) => {
   const { modelName } = req.params;
   try {
-    await axios.post("http://localhost:11434/api/stop", { model: modelName });
+    const ollama_host = process.env.OLLAMA_HOST || "http://localhost:11434";
+    await axios.post(`${ollama_host}/api/stop`, { model: modelName });
     await LLMModel.updateOne({ model_name: modelName }, { status: "Inactive" });
 
     res.json({ message: `Model ${modelName} stopped` });
