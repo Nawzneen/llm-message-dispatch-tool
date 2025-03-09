@@ -62,14 +62,16 @@ router.post("/", async (req: Request, res: Response): Promise<void> => {
 // Function to send a message to Ollama
 async function sendToOllama(llm_model: string, message_content: any, messageId: Types.ObjectId) {
   try {
-    const ollamaUrl = `http://ollama:11434/api/generate`; // Ollama endpoint
+    console.log(`Processing LLM (${llm_model})...`);
+    const ollama_host = process.env.OLLAMA_HOST || "http://localhost:11434";
+    const ollamaUrl = `${ollama_host}/api/generate`; // Ollama endpoint
     const payload = {
       model: llm_model,
       prompt: message_content.user_message,
       system: message_content.system_message,
       stream: false,
     };
-
+    
     const response = await axios.post(ollamaUrl, payload);
 
     return {
@@ -80,6 +82,8 @@ async function sendToOllama(llm_model: string, message_content: any, messageId: 
     };
   } catch (error) {
     console.error(`Error processing LLM (${llm_model}):`, error);
+    console.log(`Error processing LLM (${llm_model}):`, error);
+
     return {
       messageId,
       llm: llm_model,

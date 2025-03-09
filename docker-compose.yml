@@ -18,6 +18,7 @@ services:
     environment:
       - HOST=0.0.0.0
       - PORT=8080
+      - BACKEND_URL=http://localhost:3000
       - CHOKIDAR_USEPOLLING=true
     depends_on:
       - backend
@@ -39,12 +40,13 @@ services:
       - DB_PORT=27017
       - DB_NAME=sqa
       - PORT=3000
+      - OLLAMA_HOST=http://ollama:11434
     restart: unless-stopped
 
   ollama:
     image: ollama/ollama:latest
     ports:
-      - "11434:11434"
+      - "11437:11434"
     networks:
       - default
     environment:
