@@ -2,6 +2,7 @@ version: "3.8"
 
 networks:
   default:
+  sonar-net:
 
 services:
   frontend:
@@ -77,7 +78,26 @@ services:
       MONGO_INITDB_ROOT_PASSWORD: password
     volumes:
       - mongo_data:/data/db
-      
+
+  sonarqube:
+    image: sonarqube:community
+    container_name: sonarqube
+    ports:
+      - "9000:9000"
+    environment:
+      - SONAR_ES_BOOTSTRAP_CHECKS_DISABLE=true
+      - SONARQUBE_ADMIN_USERNAME=admin
+      - SONARQUBE_ADMIN_PASSWORD=admin
+    volumes:
+      - sonarqube_data:/opt/sonarqube/data
+      - sonarqube_extensions:/opt/sonarqube/extensions
+      - sonarqube_logs:/opt/sonarqube/logs
+    networks:
+      - sonar-net
+
 volumes:
   mongo_data:
     driver: local
+  sonarqube_data:
+  sonarqube_extensions:
+  sonarqube_logs:
