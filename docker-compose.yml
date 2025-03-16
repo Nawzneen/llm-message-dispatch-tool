@@ -95,9 +95,19 @@ services:
     networks:
       - sonar-net
 
+  codescene:
+    image: codescene/codescene:latest
+    ports:
+      - 3003:3003
+    networks:
+      - default
+    volumes:
+      - codescene:/codescene
+      
 volumes:
   mongo_data:
     driver: local
   sonarqube_data:
   sonarqube_extensions:
   sonarqube_logs:
+  codescene:
