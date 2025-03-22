@@ -1,0 +1,99 @@
+{
+    "description": null,
+    "readable_analysis_time": "2025-03-22T07:20",
+    "analysis_repo_revisions": [
+        {
+            "repo": "/codescene/repos/a19638b6017e0bf0828a40ae1ff5cee46e24130f/commons-jexl",
+            "revision": "527e7e00d047128302354b56bfa52ed194355568"
+        }
+    ],
+    "dir": "/codescene/analysis/1f41051f6f2563afda2f13ad88960965f1c6c6a6/analysis20250322072051",
+    "name": "commons-jexl",
+    "summary": {
+        "unique_issue_ids": 263,
+        "issues_filtered_as_outliers": 41,
+        "entities": 493,
+        "commits_with_issue_ids": 598,
+        "authors_count": 30,
+        "active_authors_count": 4,
+        "issues_with_cycle_time": 157,
+        "total_number_of_code_health_directives": 0,
+        "commits": 2082,
+        "files": 216,
+        "issue_ids_matched_to_issues": 198,
+        "issues_classed_as_defects": 67,
+        "files_with_code_health_directives": 0,
+        "issues_with_cost": 0,
+        "files_with_code_health": 199
+    },
+    "file_summary": [
+        {
+            "language": "Java",
+            "number_of_files": 216,
+            "blank": 5935,
+            "comment": 17366,
+            "code": 39689
+        },
+        {
+            "language": "XML",
+            "number_of_files": 21,
+            "blank": 173,
+            "comment": 463,
+            "code": 4002
+        },
+        {
+            "language": "Text",
+            "number_of_files": 6,
+            "blank": 148,
+            "comment": 0,
+            "code": 802
+        },
+        {
+            "language": "Markdown",
+            "number_of_files": 5,
+            "blank": 49,
+            "comment": 0,
+            "code": 244
+        },
+        {
+            "language": "YAML",
+            "number_of_files": 5,
+            "blank": 33,
+            "comment": 95,
+            "code": 139
+        },
+        {
+            "language": "JSON",
+            "number_of_files": 1,
+            "blank": 0,
+            "comment": 0,
+            "code": 18
+        },
+        {
+            "language": "Ignored",
+            "number_of_files": 6,
+            "blank": 0,
+            "comment": 0,
+            "code": 0
+        }
+    ],
+    "id": 2,
+    "high_level_metrics": {
+        "code_health_weighted_average_last_month": 7.61,
+        "active_developers": 4,
+        "code_health_month_worst_performer": 2.2561789,
+        "code_health_weighted_average_current": 7.61,
+        "lines_of_code": 44894,
+        "hotspots_code_health_now_weighted_average": 5.6,
+        "code_health_weighted_average_last_year": 7.69,
+        "current_score": 5.6,
+        "code_health_year_worst_performer": 2.2596383,
+        "hotspots_code_health_month_weighted_average": 5.6,
+        "hotspots_code_health_year_weighted_average": 5.63,
+        "year_score": 5.63,
+        "system_mastery": 100,
+        "code_health_now_worst_performer": 2.2561789,
+        "month_score": 5.6
+    },
+    "project_id": 2
+}
